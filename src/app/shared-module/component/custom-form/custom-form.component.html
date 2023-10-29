@@ -1,0 +1,105 @@
+<main class="py-6 bg-surface-secondary">
+<div class="container-fluid">
+<div class="card shadow border-0 mb-7">
+   <div class="card-header">
+        <h5 class="mb-2">{{_customFormInputData?.title}}</h5>
+    </div>
+    <div class="card-body">
+    <div id="successMessage">
+        {{successMessage}}
+    </div>
+    <div id="errorMessage">
+        {{errorMessage}}
+    </div>
+        <form [formGroup]="formGroup" class="form-container">
+            <mat-card>
+
+                <mat-card-content>
+                    <div class="row" *ngIf="_customFormInputData">
+
+                        <div *ngFor="let input of _customFormInputData?.customFormDTO" class="col-md-6">
+                           
+                            <div class="mb-3 col-md-12" *ngIf="input.type==='string'" required=true >
+                                <label>{{ input.required ? input.displayName+'*' : input.displayName }}</label>
+                                <input matInput [formControlName]="input.name" [placeholder]="input.displayName" class="form-control">
+                            </div>
+                            <div class="mb-3 col-md-12" *ngIf="input.type==='textarea'" >
+                              
+                                <textarea matInput [formControlName]="input.name" [placeholder]="input.displayName" class="form-control" ></textarea>
+                            </div>
+                            <div class="mb-3 col-md-12" *ngIf="input.type==='select' && !!input.value" >
+                                 <label>{{ input.required ? input.displayName+'*' : input.displayName }}</label>
+                                <select [formControlName]="input.name"  class="form-control" style="background: #fff;">
+                                    <option value='' selected>Select {{ input.displayName }}</option>
+                                    <option *ngFor="let option of input.value" [value]=option.id>{{option.value}}</option>
+                                    
+                                  </select>
+                            </div>
+                            <div class="mb-3 col-md-12" *ngIf="input.type==='number'" >
+                                <label>{{ input.required ? input.displayName+'*' : input.displayName }}</label>
+                                <input type="number" matInput [formControlName]="input.name" [placeholder]=" input.displayName" class="form-control">
+                            </div>
+                            <div class="mb-3 col-md-12" *ngIf="input.type==='file'" >
+                                <div> {{formGroup.value[input.name]}}</div>
+                                <input type='file' class="form-control" (change)="onFileChange($event,input.name)"/>
+                            </div>
+                            <div class="mb-3 col-md-12" *ngIf="input.type==='checkbox'" >
+                                <label>{{ input.required ? input.displayName+'*' : input.displayName }}</label><br>
+                                <input type="checkbox" [formControlName]="input.name" matinput="">     
+                            </div>
+                            <div *ngIf="input.type==='group'">
+                                {{input.displayName}}
+                            <div [formGroupName]="input.name" class="form-container">
+                                <mat-card>
+                    
+                                    <mat-card-content>
+                    
+                                            <div *ngFor="let childInput of input.child" class="col-md-6 form-group" >
+                                               
+                                                <div class="mb-3 col-md-12" *ngIf="childInput.type==='string'" required=true >
+                                                    
+                                                    <input matInput [formControlName]="childInput.name" [placeholder]=" childInput.required ? childInput.displayName+'*' : childInput.displayName" class="form-control">
+                                                </div>
+                                                <div class="mb-3 col-md-12" *ngIf="childInput.type==='textarea'" >
+                                                  
+                                                    <textarea matInput [formControlName]="childInput.name" [placeholder]=" childInput.required ? input.displayName+'*' : input.displayName" class="form-control" ></textarea>
+                                                </div>
+                                                <div class="mb-3 col-md-12" *ngIf="childInput.type==='select' && !!input.value" >
+                                                    <select [formControlName]="childInput.name"  class="form-control" style="background: #fff;">
+                                                        <option value='' selected>Select {{ childInput.displayName }}</option>
+                                                        <option *ngFor="let option of childInput.value" [value]=option.id>{{option.value}}</option>
+                                                        
+                                                      </select>
+                                                </div>
+                                                <div class="mb-3 col-md-12" *ngIf="childInput.type==='number'" >
+                                                    <input type="number" matInput [formControlName]="childInput.name" [placeholder]=" childInput.required ? childInput.displayName+'*' : childInput.displayName" class="form-control">
+                                                </div>
+                                                <div class="mb-3 col-md-12" *ngIf="childInput.type==='file'" >
+                                                    <input type='file'  [formControlName]="childInput.name"  class="form-control" (change)="onFileChange($event,childInput.name)">
+                                                </div>
+                                                <div class="mb-3 col-md-12" *ngIf="childInput.type==='checkbox'" >
+                                                    <input type="checkbox" [formControlName]="childInput.name" matinput=""> {{childInput.required ? childInput.displayName+'*' : childInput.displayName}}       
+                                                </div>
+                                            </div>
+                                          
+                                    </mat-card-content>
+                                    
+                                </mat-card>
+                            </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button (click)="onSubmit()" mat-raised-button color="primary" class="btn d-inline-flex btn-sm btn-primary mx-1">
+                                        {{_customFormInputData?.submitButtonText ? _customFormInputData?.submitButtonText : "Submit"}}</button>
+                    <div *ngFor="let button of _customFormInputData?.additionalButton">
+                    <button (click)="onAddtionalButtonClick(button)"  mat-raised-button color="primary" class="btn d-inline-flex btn-sm btn-primary mx-1">
+                                    {{button}}</button>
+                </div>
+                </mat-card-actions>
+            </mat-card>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<main class="py-6 bg-surface-secondary">
+<div class="container-fluid">
+    <div class="card shadow border-0 mb-7">
+        <div class="card-header">
+            <h5 class="mb-0">Data Table</h5>
+        </div>
+        <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" class="table table-hover table-nowrap">
+    <!-- Position Column -->
+    <div *ngFor="let innerData of _customTableInputData.innerData">
+        <ng-container *ngIf="!innerData.isAction" [matColumnDef]="innerData.matColumnDef">
+            <th mat-header-cell *matHeaderCellDef> {{innerData.matHeaderCellDef}} </th>
+            <td mat-cell *matCellDef="let element"> {{element[innerData.matColumnDef]}} </td>
+        </ng-container>
+        <ng-container *ngIf="innerData.isAction " matColumnDef="Action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let element"> <mat-icon (click)="onAction(element)">edit</mat-icon> </td>
+          </ng-container>
+    </div>
+    <tr mat-header-row *matHeaderRowDef="_customTableInputData.displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: _customTableInputData.displayedColumns;"></tr>
+  
+    <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter </td>
+      </tr> 
+  
+  </table>
+        </div>
+    </div>
+</div>
+</main>
