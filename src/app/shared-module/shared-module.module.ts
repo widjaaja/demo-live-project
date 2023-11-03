@@ -20,11 +20,10 @@ import { CommissionServiceService } from './Services/commission-service/commissi
 import { CustomTableComponent } from './component/custom-table/custom-table.component';
 
 
-
 @NgModule({
   declarations: [
     CustomFormComponent,
-    CustomTableComponent
+    CustomTableComponent,
   ],
   imports: [
     HttpClientModule,

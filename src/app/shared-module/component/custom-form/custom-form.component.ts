@@ -41,9 +41,9 @@ export class CustomFormComponent implements OnInit {
    
     console.log(this.formGroup)
   }
- @Input() successMessage:String | undefined;
+  @Input() successMessage:String | undefined;
  
- @Input() errorMessage:String | undefined;
+  @Input() errorMessage:String | undefined;
   
   @Output() formDataEmit= new EventEmitter<any>
 

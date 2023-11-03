@@ -39,7 +39,7 @@ export class BillingComponent implements OnInit {
 
     ]
 
-    this.customFormInputData = { title: "Search Filter", 
+    this.customFormInputData = { title: "Search Filter Billing", 
     customFormDTO: this.customFormData, 
     submitButtonText: "Search", additionalButton:["Add Billing"] };
 
@@ -66,11 +66,17 @@ export class BillingComponent implements OnInit {
       ELEMENT_DATA:this.ELEMENT_DATA,
       innerData:this.customFormInnerData
     }
+
+    let obj = {
+      is_active: false,
+      partner_id: ""
+    }
+    this.onSubmit(obj);
   }
 
   onSubmit(formData:any){
     this.billingService.getBilling(formData).subscribe(res=>{
-      this.customTableInputData= {...this.customTableInputData, ELEMENT_DATA:res['billingList']}
+      this.customTableInputData = {...this.customTableInputData, ELEMENT_DATA:res['billingList']}
       
     })
   }

@@ -29,8 +29,10 @@ export class PromoComponent implements OnInit {
 
   customFormInputData!: CustomFormInputDTO;
 
-  constructor(private promoService:PromoServiceService,
-    private router:Router){
+  constructor(
+    private promoService:PromoServiceService,
+    private router:Router
+  ){
   
   }
   ngOnInit(): void {
@@ -41,7 +43,7 @@ export class PromoComponent implements OnInit {
 
     ]
 
-    this.customFormInputData = { title: "Search Filter", 
+    this.customFormInputData = { title: "Search Filter Promo", 
     customFormDTO: this.customFormData, 
     submitButtonText: "Search", additionalButton:["Add Promo"] };
 
@@ -73,6 +75,11 @@ export class PromoComponent implements OnInit {
       ELEMENT_DATA:this.ELEMENT_DATA,
       innerData:this.customFormInnerData
     }
+
+    let obj = {
+      partner_id: ""
+    }
+    this.onSubmit(obj)
   }
 
   onSubmit(formData:any){

@@ -5,16 +5,11 @@ import { first } from 'rxjs/operators';
 import { AccountService } from '../shared-module/Services/account.service';
 import { AuthOTPGeneration, LoginResponse } from '../dto/APIResponseDTO';
 
-
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-
-
-
 
 export class LoginComponent implements OnInit {
 
@@ -60,20 +55,17 @@ export class LoginComponent implements OnInit {
         this.accountService.authUser(this.f['username'].value, 5)
         .subscribe({
            next:  (loginResponse:LoginResponse)=>{
-                if(loginResponse.success==='true'){
-                        this.showOtp=true;
-                }else{
-                }
-                this.loading=false;
-                this.submitted=false;
+                if(loginResponse.success==='true') {
+                    this.showOtp=true;
+                } else{}
+                this.loading = false;
+                this.submitted = false;
         }, error: error=>{
             /**write logic to show error */
             this.loading=false;
             this.submitted=false;
         }
     })
-           
-         
     }
 
     verify(){

@@ -27,8 +27,8 @@ export class CommisionComponent {
 
   constructor(private commissionService:CommissionServiceService,
     private router:Router){
-  
   }
+
   ngOnInit(): void {
 
     this.customFormData = [
@@ -36,7 +36,7 @@ export class CommisionComponent {
 
     ]
 
-    this.customFormInputData = { title: "Search Filter", 
+    this.customFormInputData = { title: "Search Filter Commission", 
     customFormDTO: this.customFormData, 
     submitButtonText: "Search", additionalButton:["Create Commission"] };
 
@@ -55,16 +55,18 @@ export class CommisionComponent {
       ELEMENT_DATA:this.ELEMENT_DATA,
       innerData:this.customFormInnerData
     }
+
+    let obj = {
+      partner_id: ""
+    }
+    this.onSubmit(obj);
   }
 
   onSubmit(formData:any){
     this.commissionService.queryCommission(formData).subscribe(res=>{
       this.customTableInputData= {...this.customTableInputData, ELEMENT_DATA: res['comm_list'] }
-      
     })
   }
-
- 
 
   editElemet(element:any){
     this.router.navigateByUrl('user/updateCommission?state='+btoa(JSON.stringify(element)))

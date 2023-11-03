@@ -13,22 +13,33 @@ export class PackagingCategoryComponent {
   customFormData!: CustomFormDTO[]
 
   customFormInputData!: CustomFormInputDTO;
-  constructor(private packagingCategoryService: PackagingCategoryService) { }
+  constructor(
+    private packagingCategoryService: PackagingCategoryService
+  ) { }
 
   successMessage:String | undefined;
-
   errorMessage:String | undefined;
 
   ngOnInit() {
     this.customFormData = [
-      { name: "name", required:true, displayName: "Name", type: TYPE_ENUM.String, defaultValue: '', Validator: Validators.required },
-      ]
+      { 
+        name: "name", 
+        required:true, 
+        displayName: "Name", 
+        type: TYPE_ENUM.String, 
+        defaultValue: '', 
+        Validator: Validators.required 
+      },
+    ]
 
-    this.customFormInputData = { title: "Add Packaging Category", customFormDTO: this.customFormData, submitButtonText: "Save" };
+    this.customFormInputData = { 
+      title: "Add Packaging Category", 
+      customFormDTO: this.customFormData, 
+      submitButtonText: "Save" 
+    };
   }
 
 onSubmit(formValue: any) {
-      alert(formValue);
     this.packagingCategoryService.addPackagingCategory(formValue).subscribe(res => {
      this.successMessage= "Packaging category added successfully."
 
@@ -42,7 +53,6 @@ onSubmit(formValue: any) {
           this.errorMessage= undefined;
       },3000)
     })
-    console.log('form data is ', formValue);
   }
 
 }

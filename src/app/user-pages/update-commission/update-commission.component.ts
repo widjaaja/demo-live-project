@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Validators } from '@angular/forms';
 import { CustomFormDTO, CustomFormInputDTO, TYPE_ENUM } from 'src/app/dto/CustomFormDTO';
-import { CommissionServiceService } from 'src/app/shared-module/Services/commission-service/commission-service.service';
+import { CommissionService } from "src/app/shared-module/Services/pages/commission.service";
+import { Alert, AlertType, AlertTitle } from "src/app/dto/Alert";
 
 @Component({
   selector: 'app-update-commission',
@@ -11,18 +12,19 @@ import { CommissionServiceService } from 'src/app/shared-module/Services/commiss
 })
 export class UpdateCommissionComponent {
 
+  public isLoading: boolean = false;
   customFormData!: CustomFormDTO[]
-
   comm_id!: number;
 
   customFormInputData!: CustomFormInputDTO;
-  constructor(private route: ActivatedRoute,
-     private commissionService: CommissionServiceService,private router:Router) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router:Router,
+    private commissionService: CommissionService
+  ) { }
 
-    successMessage:String | undefined;
-
-    errorMessage:String | undefined;
-
+  successMessage:String | undefined;
+  errorMessage:String | undefined;
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -49,9 +51,11 @@ export class UpdateCommissionComponent {
             },
           ]
 
-
-
-          this.customFormInputData = { title: "Update Commission", customFormDTO: this.customFormData, submitButtonText: "Update" };
+          this.customFormInputData = { 
+            title: "Update Commission", 
+            customFormDTO: this.customFormData, 
+            submitButtonText: "Update" 
+          };
         }
       } else {
 
@@ -60,22 +64,50 @@ export class UpdateCommissionComponent {
     })
   }
 
+  updateCommission(formValue: any) {
+    let obj = {
+      id: this.comm_id,
+      data: formValue
+    }
+    this.commissionService.updateCommission(
+      obj,
+      res => {
+        Alert.showStatus(
+          AlertType.SUCCESS,
+          AlertTitle.SUCCESS,
+          'The Commission has been successfully updated!'
+        );
+        this.router.navigateByUrl('user/commission');
+      },
+      errMessage => {
+        
+        Alert.showStatus(
+          AlertType.ERROR,
+          AlertTitle.ERROR,
+          errMessage.message
+        );
+      },
+      () => {
+        this.isLoading = false;
+      }
+    )
+  } 
 
-  onSubmit(formValue: any) {
-    this.commissionService.updateCommission(this.comm_id,formValue).subscribe((res)=>{
-      this.successMessage= "Commission added successfully."
+  // onSubmit(formValue: any) {
+  //   this.commissionService.updateCommission(this.comm_id,formValue).subscribe((res)=>{
+  //     this.successMessage= "Commission added successfully."
 
-        setTimeout(()=>{
-            this.successMessage= undefined;
-            this.router.navigateByUrl('/user/commission');
-        },3000)
-    },err=>{
-      this.errorMessage= "Request failed. Please check your data."
+  //       setTimeout(()=>{
+  //           this.successMessage= undefined;
+  //           this.router.navigateByUrl('/user/commission');
+  //       },3000)
+  //   },err=>{
+  //     this.errorMessage= "Request failed. Please check your data."
 
-      setTimeout(()=>{
-          this.errorMessage= undefined;
-      },3000)
-    })
-   }
+  //     setTimeout(()=>{
+  //         this.errorMessage= undefined;
+  //     },3000)
+  //   })
+  //  }
 
 }

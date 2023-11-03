@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API_BASE, COMMISSION_API_BASE } from 'src/app/dto/constants';
+
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -10,18 +11,19 @@ export class PartnerService {
   constructor(private http:HttpClient) { }
 
   getAllPartner(filterUrl?:string){
-    return this.http.get<any>(API_BASE+'partners'+filterUrl);
+    return this.http.get<any>(`${environment.apiBaseUrl}api/partners/${filterUrl}`);
   }
 
-  editPartnerByPartnerID(partner_details:any){
-    return this.http.post<any>(API_BASE+'partner/?action=edit',{partner_details},{headers : {
-     
-    }
-  });
+  addAllPartner(data: any){
+    return this.http.post<any>(`${environment.apiBaseUrl}api/partners?action=new`, data);
   }
 
-  uploadImage(formData:FormData){
-    return this.http.post<any>(API_BASE+'upload',formData);
+  editPartnerByPartnerID(data: any){
+    return this.http.post<any>(`${environment.apiBaseUrl}api/partners?action=edit`, data);
+  };
+
+  uploadImage(data: FormData){
+    return this.http.post<any>(`${environment.apiBaseUrl}api/upload`, data);
   }
 
 }

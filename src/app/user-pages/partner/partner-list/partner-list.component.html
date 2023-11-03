@@ -1,2 +1,11 @@
-<app-custom-form [customFormInputData]="customFormInputData" (formDataEmit)="applyFilter($event)"></app-custom-form>
-<app-custom-table [customTableInputData]="customTableInputData" (actionEmit)="editElemet($event)"></app-custom-table>
+<app-custom-form 
+    [customFormInputData]="customFormInputData" 
+    (formDataEmit)="applyFilter($event)" 
+    (addtionalButtonOutput)="addItem($event)"
+>
+</app-custom-form>
+<app-custom-table 
+    [customTableInputData]="customTableInputData" 
+    (actionEmit)="editElemet($event)"
+>
+</app-custom-table>

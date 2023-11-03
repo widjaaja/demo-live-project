@@ -52,9 +52,9 @@ export class PartnerListComponent implements OnInit {
 
   ]
 
-  customFormInputData = { title: "Filter", 
+  customFormInputData = { title: "Search Filter Partner", 
   customFormDTO: this.customFormData, 
-  submitButtonText: "Apply Filter" };
+  submitButtonText: "Apply Filter", additionalButton:["Add Partner"] };
 
   constructor(private partnerService:PartnerService,private router:Router){
     
@@ -67,8 +67,8 @@ export class PartnerListComponent implements OnInit {
 
   getAllPartner(){
     let filteredUrl=''
-    if(this.serviceId){
-      filteredUrl='/service/'+this.serviceId
+    if(this.serviceId) {
+      filteredUrl='service/' + this.serviceId
     }
     this.partnerService.getAllPartner(filteredUrl).subscribe(res=>{
       this.customTableInputData = {...this.customTableInputData, ELEMENT_DATA:res['partnerDetails']}
@@ -79,8 +79,8 @@ export class PartnerListComponent implements OnInit {
     this.router.navigateByUrl('user/partner/edit?state='+btoa(JSON.stringify(element)));
   }
 
-  adPromo(event:any){
-    this.router.navigateByUrl('user/createCommission');
+  addItem(event:any){
+    this.router.navigateByUrl('user/partner/add');
   }
 
   applyFilter(serviceId:any){

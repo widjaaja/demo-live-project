@@ -1,12 +1,12 @@
 <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
    
     <mat-sidenav-container fullscreen>    
-        <mat-sidenav  *ngIf="user"  [opened]="isOpened" mode="side" >
+        <mat-sidenav *ngIf="user || true" [opened]="isOpened" mode="side" >
             <app-side-navigation />
         </mat-sidenav>
         <mat-sidenav-content>
             <div class="h-screen flex-grow-1 overflow-y-lg-auto">    
-                <app-header *ngIf="user" (toggleSideNavEvent)="toggleSideNav($event)"></app-header> 
+                <app-header *ngIf="user || true" (toggleSideNavEvent)="toggleSideNav($event)"></app-header> 
                 <div [ngClass]="{ 'bg-light': user,
                 'app-container':!user }">
                     <router-outlet></router-outlet>

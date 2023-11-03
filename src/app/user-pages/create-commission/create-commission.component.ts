@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router'
 import { Validators } from '@angular/forms';
 import { CustomFormDTO, CustomFormInputDTO, TYPE_ENUM } from 'src/app/dto/CustomFormDTO';
 import { CommissionServiceService } from 'src/app/shared-module/Services/commission-service/commission-service.service';
+import { CommissionService } from "src/app/shared-module/Services/pages/commission.service";
+import { Alert, AlertType, AlertTitle } from "src/app/dto/Alert";
 
 @Component({
   selector: 'app-create-commission',
@@ -10,14 +13,15 @@ import { CommissionServiceService } from 'src/app/shared-module/Services/commiss
 })
 export class CreateCommissionComponent {
 
+  public isLoading: boolean = false;
   customFormData!: CustomFormDTO[]
-
   customFormInputData!: CustomFormInputDTO;
-  router: any;
-  constructor(private commissionService: CommissionServiceService) { }
+  constructor(
+    private router:Router,
+    private commissionService: CommissionService
+    ) { }
 
   successMessage:String | undefined;
-
   errorMessage:String | undefined;
 
   ngOnInit() {
@@ -31,20 +35,28 @@ export class CreateCommissionComponent {
 
   }
 
-  onSubmit(formValue: any) {
-    this.commissionService.createCommission(formValue).subscribe(res => {
-       this.successMessage= "Commission added successfully."
-
-        setTimeout(()=>{
-            this.successMessage= undefined;
-            this.router.navigateByUrl('/user/commission');
-        },3000)
-    },err=>{
-      this.errorMessage= "Request failed. Please check your data."
-
-      setTimeout(()=>{
-          this.errorMessage= undefined;
-      },3000)
-    })
-  }
+  createCommission(formValue: any) {
+    this.commissionService.createCommission(
+      formValue,
+      res => {
+        Alert.showStatus(
+          AlertType.SUCCESS,
+          AlertTitle.SUCCESS,
+          'The Commission has been successfully created!'
+        );
+        this.router.navigateByUrl('user/commission');
+      },
+      errMessage => {
+        
+        Alert.showStatus(
+          AlertType.ERROR,
+          AlertTitle.ERROR,
+          errMessage.message
+        );
+      },
+      () => {
+        this.isLoading = false;
+      }
+    )
+  } 
 }

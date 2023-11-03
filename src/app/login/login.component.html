@@ -5,7 +5,7 @@
                     <div class="login_title">Login</div>
                     <div class="input_box">
                         <label class="form-label">Username</label>
-                        <input type="text" formControlName="username" class="inputfield" required maxlength="10" placeholder="Enter your Phone No." />
+                        <input type="text" formControlName="username" class="inputfield" required maxlength="15" placeholder="Enter your Phone No." />
                         <!-- <span class="focus-input100" data-symbol=""></span> -->
                         <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
                             <div *ngIf="f['username'].errors['required']">Username is required</div>

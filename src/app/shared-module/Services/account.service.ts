@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from "src/environments/environment";
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { AuthOTPGeneration, LoginResponse } from 'src/app/dto/APIResponseDTO';
 
@@ -15,7 +16,7 @@ export class AccountService {
     private router: Router,
     private http: HttpClient
   ) {
-        this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('user')!));
+      this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('user')!));
        this.user = this.userSubject.asObservable(); 
   }
 
@@ -24,12 +25,12 @@ export class AccountService {
 }
 
   authUser(userName: string, authType: number):Observable<LoginResponse> {
-    return this.http.post<LoginResponse>('https://korikelogistics.com:8443/authUser', { userName, authType: 5 })
+    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}authUser`, { userName, authType: 5 })
   }
 
   login(userName:string,oneTimePass:string):Observable<AuthOTPGeneration>{
 
-    return this.http.post<AuthOTPGeneration>('https://korikelogistics.com:8443/authUser/generateToken',
+    return this.http.post<AuthOTPGeneration>(`${environment.apiBaseUrl}authUser/generateToken`,
      { userName, oneTimePass }) .pipe(map(user => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem('user', JSON.stringify(user));

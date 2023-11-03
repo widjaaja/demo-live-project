@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, filter, tap, catchError } from 'rxjs/operators'
+import { Alert, AlertTitle, AlertType } from 'src/app/dto/Alert';
 
 import { AccountService } from '../account.service';
 
@@ -17,6 +18,7 @@ export class InterceptorService implements HttpInterceptor {
     const isLoggedIn = user && user.token;
     // const isApiUrl = request.url.startsWith(environment.apiUrl);
     const isApiUrl = true
+
     if (isLoggedIn && isApiUrl) {
       request = request.clone({
         setHeaders: {
@@ -24,16 +26,29 @@ export class InterceptorService implements HttpInterceptor {
         }
       });
     }
-    return next.handle(request).pipe( tap(() => {},
-    (err: any) => {
-      if (err instanceof HttpErrorResponse) {
-        if (err.status !== 401) {
-      
-         return;
-        }
-        this.router.navigate(['login']);
-      }
-    }));
+        return next.handle(request)
+        .pipe(
+           catchError((err: HttpErrorResponse) => {
+               console.log(err);
+               
+               if (err.status === 401){
+                Alert.showStatus(
+                  AlertType.ERROR,
+                  AlertTitle.ERROR,
+                  'Unauthorized User'
+                );
+                this.router.navigate(['login']);
+              }
+              else {
+                Alert.showStatus(
+                  AlertType.ERROR,
+                  AlertTitle.ERROR,
+                  err.error.statusDetails
+                );
+              }
+              return throwError(() => 'Session User Expired');
+           })
+        );
   }
     
 }
