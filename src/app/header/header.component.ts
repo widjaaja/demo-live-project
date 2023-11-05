@@ -8,16 +8,21 @@ import { AccountService } from '../shared-module/Services/account.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+
+  public isSideNav: boolean = false;
+
   constructor(
-        private accountService: AccountService,
-        private router: Router,
-    ) { }
+    private accountService: AccountService,
+    private router: Router,
+  ) { }
 
   @Output() toggleSideNavEvent = new EventEmitter<boolean>();
 
-  toggleSideNav(){
-    this.toggleSideNavEvent.emit(true);
+  public toggleSideNav(){
+    this.isSideNav = !this.isSideNav;
+    this.toggleSideNavEvent.emit(this.isSideNav);
   }
+
   logout() {
     this.accountService.logout();
     this.router.navigateByUrl('/login');

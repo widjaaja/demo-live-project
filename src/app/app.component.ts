@@ -11,7 +11,7 @@ export class AppComponent {
   title = '';
   user?: AuthOTPGeneration | null;
   mode='side'
-  isOpened=true;
+  isOpened = true;
 
     constructor(private accountService: AccountService) {
         this.accountService.user.subscribe(x => this.user = x);
@@ -21,8 +21,8 @@ export class AppComponent {
         this.accountService.logout();
     }
 
-    toggleSideNav(event:boolean){
-      console.log(event)
-        this.isOpened= !this.isOpened;
+    toggleSideNav(item: boolean) {
+      console.log(item, 'navbar');
+      this.isOpened = item;
     }
 }
