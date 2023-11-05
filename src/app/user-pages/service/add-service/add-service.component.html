@@ -1,1 +1,6 @@
-<app-custom-form [successMessage]="successMessage" [errorMessage]="errorMessage" [customFormInputData]="customFormInputData" (formDataEmit)="onSubmit($event)"></app-custom-form>
+<app-custom-form 
+    [successMessage]="successMessage" 
+    [errorMessage]="errorMessage" 
+    [customFormInputData]="customFormInputData" 
+    (formDataEmit)="createService($event)"
+></app-custom-form>

@@ -1,29 +1,29 @@
 <div class="Login_box">
     <div class="login_area">
         <div *ngIf="!showOtp">
-                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                    <div class="login_title">Login</div>
-                    <div class="input_box">
-                        <label class="form-label">Username</label>
-                        <input type="text" formControlName="username" class="inputfield" required maxlength="15" placeholder="Enter your Phone No." />
-                        <!-- <span class="focus-input100" data-symbol=""></span> -->
-                        <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
-                            <div *ngIf="f['username'].errors['required']">Username is required</div>
-                        </div>
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
+                <div class="login_title">Login</div>
+                <div class="input_box">
+                    <label class="form-label">Username</label>
+                    <input type="text" formControlName="username" class="inputfield" required maxlength="15" placeholder="Enter your Phone No." />
+                    <!-- <span class="focus-input100" data-symbol=""></span> -->
+                    <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+                        <div *ngIf="f['username'].errors['required']">Username is required</div>
                     </div>
+                </div>
 
 
-                    <div class="buttons">
-                        <button [disabled]="loading" class="btn-hover color-1">
-                            <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
-                            Login
-                        </button>
+                <div class="buttons">
+                    <button [disabled]="loading" class="btn-hover color-1">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+                        Login
+                    </button>
 
-                    </div>
-                </form>
+                </div>
+            </form>
         </div>
         <div *ngIf="showOtp">
-            <form [formGroup]="otpForm" (ngSubmit)="verify()">
+            <form [formGroup]="otpForm" (ngSubmit)="verifyOTP()">
                 <div class="login_title">Otp Verify</div>
                 <div class="input_box">
                     <label class="form-label">OTP</label>

@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { Alert, AlertType, AlertTitle } from "src/app/dto/Alert";
 import { CustomFormDTO, CustomFormInputDTO, CustomTableDTO, CustomTableInnerDataDTO, TYPE_ENUM } from 'src/app/dto/CustomFormDTO';
-import { ServiceService } from 'src/app/shared-module/Services/service/service.service';
+// import { ServiceService } from 'src/app/shared-module/Services/service/service.service';
+import { ConsumerService } from "src/app/shared-module/Services/pages/consumer.service";
 
 @Component({
   selector: 'app-list-consumer',
@@ -12,6 +14,8 @@ import { ServiceService } from 'src/app/shared-module/Services/service/service.s
 })
 export class ListConsumerComponent {
 
+  public isLoading: boolean = false;
+  
   ELEMENT_DATA: any[] =[];
   customTableInputData!:CustomTableDTO;
   customFormInnerData!:CustomTableInnerDataDTO[]; 
@@ -21,7 +25,7 @@ export class ListConsumerComponent {
   customFormInputData!: CustomFormInputDTO;
 
   constructor(
-    private serviceService:ServiceService,
+    private consumerService: ConsumerService,
     private router:Router
   ){}
 
@@ -31,9 +35,9 @@ export class ListConsumerComponent {
       { name: "isActive", displayName: "Is Active", type: TYPE_ENUM.checkbox, defaultValue: false },
     ]
 
-    this.customFormInputData = { title: "Search Filter Service", 
+    this.customFormInputData = { title: "Search Filter Consumer", 
     customFormDTO: this.customFormData, 
-    submitButtonText: "Search", additionalButton:["Add Service"] };
+    submitButtonText: "Search", additionalButton:["Add Consumer"] };
 
 
     this.displayedColumns= [ "service_id","service_name","Action"];
@@ -49,13 +53,35 @@ export class ListConsumerComponent {
       innerData:this.customFormInnerData
     }
 
-    this.getListConsumer();
+    this.getListConsumer('');
   }
 
-  getListConsumer() {
-    this.serviceService.getListService().subscribe((res: any)=>{
-      this.customTableInputData= {...this.customTableInputData, ELEMENT_DATA: res['comm_list'] }
-    })
+  getListConsumer(formData:any){
+    this.consumerService.getConsumerDetail(
+      '',
+      res => {
+        // Alert.showStatus(
+        //   AlertType.SUCCESS,
+        //   AlertTitle.SUCCESS,
+        //   'The Commission has been successfully created!'
+        // );
+        this.customTableInputData = {
+          ...this.customTableInputData, 
+          ELEMENT_DATA : res['promoList']
+        }
+      },
+      errMessage => {
+        
+        Alert.showStatus(
+          AlertType.ERROR,
+          AlertTitle.ERROR,
+          ''
+        );
+      },
+      () => {
+        this.isLoading = false;
+      }
+    )
   }
 
   addItem(event:any){

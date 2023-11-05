@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { AccountService } from '../shared-module/Services/account.service';
+
+import { Alert, AlertType, AlertTitle } from "src/app/dto/Alert";
+import { AccountService } from '../shared-module/Services/auth-account/account.service';
 import { AuthOTPGeneration, LoginResponse } from '../dto/APIResponseDTO';
 
 @Component({
@@ -13,6 +15,7 @@ import { AuthOTPGeneration, LoginResponse } from '../dto/APIResponseDTO';
 
 export class LoginComponent implements OnInit {
 
+    public isLoading: boolean = false;
     loginForm! :FormGroup
     otpForm!: FormGroup
     loading = false;
@@ -40,59 +43,125 @@ export class LoginComponent implements OnInit {
 
     get otp() { return this.otpForm.controls; }
 
-    onSubmit() {
-        this.submitted = true;
-
-        // reset alerts on submit
-
-        // stop here if form is invalid
-        if (this.loginForm.invalid) {
-          this.submitted=false
-            return;
+    public login() {
+        let obj = { 
+            username: this.f['username'].value, 
+            authType: 5 
         }
-
-        this.loading = true;
-        this.accountService.authUser(this.f['username'].value, 5)
-        .subscribe({
-           next:  (loginResponse:LoginResponse)=>{
-                if(loginResponse.success==='true') {
-                    this.showOtp=true;
-                } else{}
-                this.loading = false;
-                this.submitted = false;
-        }, error: error=>{
-            /**write logic to show error */
-            this.loading=false;
-            this.submitted=false;
-        }
-    })
+        this.accountService.login(
+            obj,
+            res => {
+                Alert.showStatus(
+                AlertType.SUCCESS,
+                AlertTitle.SUCCESS,
+                'We Send OTP Code to your phone number'
+                );
+                if(res.success === 'true') {
+                    this.showOtp = true;
+                } 
+                else{
+                    this.loading = false;
+                    this.submitted = false;
+                }
+               
+            },
+            errMessage => {
+                Alert.showStatus(
+                    AlertType.ERROR,
+                    AlertTitle.ERROR,
+                    ''
+                );
+            },
+            () => {
+                this.isLoading = false;
+            }
+        )
     }
 
-    verify(){
-        this.submitted = true;
-
-        // reset alerts on submit
-
-        // stop here if form is invalid
-        if (this.otpForm.invalid) {
-          this.submitted=false
-            return;
+    public verifyOTP() {
+        let obj = { 
+            username: this.f['username'].value, 
+            oneTimePass: this.otp['oneTimePass'].value
         }
-        this.loading = true;
-        this.accountService.login(this.f['username'].value,this.otp['oneTimePass'].value)
-        .subscribe({
-           next: (authOtpResponse:AuthOTPGeneration)=>{
-                if(authOtpResponse){
+        this.accountService.generateToken(
+            obj,
+            res => {
+                Alert.showStatus(
+                    AlertType.SUCCESS,
+                    AlertTitle.SUCCESS,
+                    'OTP Verified'
+                );
+                if(res){
+                    localStorage.setItem('user', JSON.stringify(res));
                     this.router.navigateByUrl('user')
                 }
-                console.log(authOtpResponse)
-        }, error:error=>{
-            /**write logic to show error */
-            this.loading=false;
-            this.submitted=false;
-        }
-    })
+                console.log(res);
+            },
+            errMessage => {
+                Alert.showStatus(
+                    AlertType.ERROR,
+                    AlertTitle.ERROR,
+                    ''
+                );
+            },
+            () => {
+                this.isLoading = false;
+            }
+        )
     }
+
+    // onSubmit() {
+    //     this.submitted = true;
+
+    //     // reset alerts on submit
+
+    //     // stop here if form is invalid
+    //     if (this.loginForm.invalid) {
+    //       this.submitted = false
+    //         return;
+    //     }
+
+    //     this.loading = true;
+    //     this.accountService.authUser(this.f['username'].value, 5)
+    //     .subscribe({
+    //        next:  (loginResponse:LoginResponse)=>{
+    //             if(loginResponse.success==='true') {
+    //                 this.showOtp=true;
+    //             } else{}
+    //             this.loading = false;
+    //             this.submitted = false;
+    //     }, error: error=>{
+    //         /**write logic to show error */
+    //         this.loading=false;
+    //         this.submitted=false;
+    //     }
+    // })
+    // }
+
+    // verify(){
+    //     this.submitted = true;
+    //     // reset alerts on submit
+
+    //     // stop here if form is invalid
+    //     if (this.otpForm.invalid) {
+    //       this.submitted=false
+    //         return;
+    //     }
+    //     this.loading = true;
+    //     this.accountService.login(this.f['username'].value,this.otp['oneTimePass'].value)
+    //     .subscribe({
+    //        next: (authOtpResponse:AuthOTPGeneration)=>{
+    //             if(authOtpResponse){
+    //                 this.router.navigateByUrl('user')
+    //             }
+    //             console.log(authOtpResponse)
+    //     }, error:error=>{
+    //         /**write logic to show error */
+    //         this.loading=false;
+    //         this.submitted=false;
+    //     }
+    // })
+    // }
 }
 
 

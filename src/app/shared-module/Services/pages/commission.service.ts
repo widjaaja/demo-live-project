@@ -8,14 +8,15 @@ import { environment } from 'src/environments/environment';
   })
   export class CommissionService extends ApiBaseService {
   
-    public getListProduct(
+    public getListCommission(
       request: any,
       onSuccess: (data: any) => void,
       onError: (errMessage: string) => void,
       onComplete: () => void
     ) {
-      return this.get(
-        `product/products`,
+      return this.post(
+        `api/admin/commission?action=query`,
+        request,
         onSuccess,
         onError,
         onComplete

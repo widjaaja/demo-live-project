@@ -1,0 +1,11 @@
+<app-custom-form 
+    [customFormInputData]="customFormInputData" 
+    (formDataEmit)="getListBilling($event)" 
+    (addtionalButtonOutput)="gotoAddBilling($event)"
+></app-custom-form>
+
+<app-custom-table 
+    [customTableInputData]="customTableInputData" 
+    (actionEmit)="gotoEditBilling($event)"
+></app-custom-table>
+

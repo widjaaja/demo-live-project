@@ -1,0 +1,11 @@
+<app-custom-form 
+    [customFormInputData]="customFormInputData" 
+    (formDataEmit)="getListCommission($event)" 
+    (addtionalButtonOutput)="gotoAddCommission($event)">
+</app-custom-form>
+
+<app-custom-table 
+    [customTableInputData]="customTableInputData"
+    (actionEmit)="gotoEditCommission($event)">
+</app-custom-table>
+

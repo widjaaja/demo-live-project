@@ -1,0 +1,10 @@
+<app-custom-form 
+    [customFormInputData]="customFormInputData" 
+    (formDataEmit)="getListPromo($event)" 
+    (addtionalButtonOutput)="gotoCreatePromo($event)"
+></app-custom-form>
+
+<app-custom-table 
+    [customTableInputData]="customTableInputData" 
+    (actionEmit)="gotoEditPromo($event)"
+></app-custom-table>

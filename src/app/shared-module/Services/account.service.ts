@@ -36,7 +36,7 @@ export class AccountService {
       localStorage.setItem('user', JSON.stringify(user));
       this.userSubject.next(user);
       return user;
-  }));
+    }));
   }
 
   logout() {
@@ -44,6 +44,6 @@ export class AccountService {
     localStorage.removeItem('user');
     this.userSubject.next(null);
     this.router.navigate(['/login']);
-}
+  }
 
 }
