@@ -8,12 +8,12 @@ import { Component } from '@angular/core';
 export class DashboardComponent {
 
   ngOnInit(): void {
-    let obj =   {
-      "success": true,
-      "client": "9945335164",
-      "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5OTQ1MzM1MTY0XzUiLCJyb2xlcyI6WyJTdXBlcnVzZXIiXSwiaWF0IjoxNjk4NzU0MzkyLCJleHAiOjE2OTkzNTkxOTJ9.m-O-d6o78ZE3BQD0-hUSwXHyBStRC9SIKnEM804xJ-A"
-    }
-    localStorage.setItem('user', JSON.stringify(obj));
+    // let obj =   {
+    //   "success": true,
+    //   "client": "9945335164",
+    //   "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5OTQ1MzM1MTY0XzUiLCJyb2xlcyI6WyJTdXBlcnVzZXIiXSwiaWF0IjoxNjk4NzU0MzkyLCJleHAiOjE2OTkzNTkxOTJ9.m-O-d6o78ZE3BQD0-hUSwXHyBStRC9SIKnEM804xJ-A"
+    // }
+    // localStorage.setItem('user', JSON.stringify(obj));
   }
 
    

@@ -19,11 +19,11 @@ const routes: Routes = [
     path: 'user',
     loadChildren: () => import('./user-pages/user-pages.module').then(m => m.UserPagesModule),
     canActivateChild: [
-      // (next: ActivatedRouteSnapshot) => {
-      //   return inject(AccountService)
-      //     .userValue?.token ? true : createUrlTreeFromSnapshot(next, ['/', 'login'])
+      (next: ActivatedRouteSnapshot) => {
+        return inject(AccountService)
+          .userValue?.token ? true : createUrlTreeFromSnapshot(next, ['/', 'login'])
             
-      // },
+      },
     ]
   },
 
