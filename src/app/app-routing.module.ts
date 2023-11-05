@@ -1,7 +1,9 @@
 import { NgModule, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterModule, Routes, createUrlTreeFromSnapshot } from '@angular/router';
-import { LoginComponent } from './login/login.component';
+
 import { AccountService } from './shared-module/Services/account.service';
+import { LoginComponent } from './login/login.component';
+import { AccountBypassComponent } from "./auth-account/account-bypass/account-bypass.component";
 
 const routes: Routes = [
   {
@@ -11,10 +13,13 @@ const routes: Routes = [
     path: 'login', component: LoginComponent, canActivate: [
       (next: ActivatedRouteSnapshot) => {
         return inject(AccountService)
-          .userValue?.token ?  createUrlTreeFromSnapshot(next, ['/', 'user']) :true
-            
+          .userValue?.token ?  createUrlTreeFromSnapshot(next, ['/', 'user']) :true    
       },
-    ] },
+    ] 
+  },
+  { 
+    path: 'bypass', component: AccountBypassComponent
+  },
   {
     path: 'user',
     loadChildren: () => import('./user-pages/user-pages.module').then(m => m.UserPagesModule),

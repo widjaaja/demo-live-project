@@ -11,6 +11,7 @@ import { InterceptorService } from './shared-module/Services/custom-http-interce
 import { SharedModuleModule } from './shared-module/shared-module.module';
 import { SideNavigationComponent } from './side-navigation/side-navigation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AccountBypassComponent } from './auth-account/account-bypass/account-bypass.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginComponent,
     SideNavigationComponent,
     HeaderComponent,
+    AccountBypassComponent,
     
   ],
   imports: [
