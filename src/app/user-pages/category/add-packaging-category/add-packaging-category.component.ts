@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { Alert, AlertType, AlertTitle } from "src/app/dto/Alert";
 import { CustomFormDTO, CustomFormInputDTO, TYPE_ENUM } from 'src/app/dto/CustomFormDTO';
+import { CategoryService } from "src/app/shared-module/Services/pages/category.service";
 import { PackagingCategoryService } from 'src/app/shared-module/Services/packaging-category/packaging-category.service';
 
 @Component({
@@ -10,13 +13,15 @@ import { PackagingCategoryService } from 'src/app/shared-module/Services/packagi
 })
 export class AddPackagingCategoryComponent {
 
+  public isLoading: boolean = false;
+
   customFormData!: CustomFormDTO[]
   customFormInputData!: CustomFormInputDTO;
-
   successMessage:String | undefined;
   errorMessage:String | undefined;
   
   constructor(
+    private categoryService: CategoryService,
     private packagingCategoryService: PackagingCategoryService
   ) { }
 
@@ -39,20 +44,28 @@ export class AddPackagingCategoryComponent {
     };
   }
 
-onSubmit(formValue: any) {
-    this.packagingCategoryService.addPackagingCategory(formValue).subscribe(res => {
-     this.successMessage= "Packaging category added successfully."
-
-        setTimeout(()=>{
-            this.successMessage= undefined;
-        },3000)
-    },err=>{
-      this.errorMessage= "Request failed. Please check your data."
-
-      setTimeout(()=>{
-          this.errorMessage= undefined;
-      },3000)
-    })
+  public createPackagingCategory(formValue: any) {
+    this.categoryService.createPackageCategory(
+      formValue,
+      res => {
+        Alert.showStatus(
+          AlertType.SUCCESS,
+          AlertTitle.SUCCESS,
+          'Packaging category added successfully.'
+        );
+      },
+      errMessage => {
+        
+        Alert.showStatus(
+          AlertType.ERROR,
+          AlertTitle.ERROR,
+          errMessage.message
+        );
+      },
+      () => {
+        this.isLoading = false;
+      }
+    )
   }
 
 }

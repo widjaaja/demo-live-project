@@ -23,7 +23,6 @@ import { environment } from 'src/environments/environment';
     }
 
     public getConsumerDetail(
-        request: any,
         onSuccess: (data: any) => void,
         onError: (errMessage: string) => void,
         onComplete: () => void

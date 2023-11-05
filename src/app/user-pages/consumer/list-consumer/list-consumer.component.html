@@ -1,11 +1,6 @@
 <app-custom-form 
+    [successMessage]="successMessage" 
+    [errorMessage]="errorMessage" 
     [customFormInputData]="customFormInputData" 
-    (formDataEmit)="getListConsumer($event)" 
-    (addtionalButtonOutput)="addItem($event)"
+    (formDataEmit)="createService($event)"
 ></app-custom-form>
-
-<app-custom-table 
-    [customTableInputData]="customTableInputData" 
-    (actionEmit)="editItem($event)"
-></app-custom-table>
-

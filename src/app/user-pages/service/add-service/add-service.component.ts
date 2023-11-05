@@ -28,8 +28,6 @@ export class AddServiceComponent {
     private servicesService:ServicesService,
   ) { }
 
-
-
   ngOnInit() {
     this.customFormData = [
       { name: "service_name", required:true,  displayName: "Services Name", type: TYPE_ENUM.String, defaultValue: '', Validator: Validators.required },

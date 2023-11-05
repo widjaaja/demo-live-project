@@ -15,14 +15,31 @@ import { ConsumerService } from "src/app/shared-module/Services/pages/consumer.s
 export class ListConsumerComponent {
 
   public isLoading: boolean = false;
-  
-  ELEMENT_DATA: any[] =[];
-  customTableInputData!:CustomTableDTO;
-  customFormInnerData!:CustomTableInnerDataDTO[]; 
-  displayedColumns!: string[] 
-  queryFilterForm!:FormGroup
+  public customerDetails: any = {
+    "user_id": "",
+    "consumer_phone": "",
+    "consumer_email": "",
+    "consumer_addresses": [{
+      "consumer_id": "",
+      "consumer_address_name": "",
+      "consumer_address": "",
+      "consumer_address_status": "Active",
+      "consumer_address_latlong": ""
+    }],
+    "consumer_kyc": [{
+      "kycId":"1",
+      "kycName": "",
+      "kycDescription": "",
+      "kycAttachmentPath": [""],
+      "kycVerification": ""
+
+    }]
+  };
+
   customFormData!: CustomFormDTO[]
   customFormInputData!: CustomFormInputDTO;
+  successMessage:String | undefined;
+  errorMessage:String | undefined;
 
   constructor(
     private consumerService: ConsumerService,
@@ -30,45 +47,35 @@ export class ListConsumerComponent {
   ){}
 
   ngOnInit(): void {
-
-    this.customFormData = [
-      { name: "isActive", displayName: "Is Active", type: TYPE_ENUM.checkbox, defaultValue: false },
-    ]
-
-    this.customFormInputData = { title: "Search Filter Consumer", 
-    customFormDTO: this.customFormData, 
-    submitButtonText: "Search", additionalButton:["Add Consumer"] };
+    this.getDetailConsumer();
 
 
-    this.displayedColumns= [ "service_id","service_name","Action"];
-    this.customFormInnerData= [
-      {matColumnDef:"service_id",matHeaderCellDef:"Service Id",isAction:false},
-      {matColumnDef:"service_name",matHeaderCellDef:"Service Name",isAction:false},
-      {matColumnDef:"Action",matHeaderCellDef:"Action",isAction:true},
-    ]
+    
 
-    this.customTableInputData ={
-      displayedColumns:this.displayedColumns,
-      ELEMENT_DATA:this.ELEMENT_DATA,
-      innerData:this.customFormInnerData
-    }
-
-    this.getListConsumer('');
+   
   }
 
-  getListConsumer(formData:any){
+  getDetailConsumer(){
     this.consumerService.getConsumerDetail(
-      '',
       res => {
         // Alert.showStatus(
         //   AlertType.SUCCESS,
         //   AlertTitle.SUCCESS,
         //   'The Commission has been successfully created!'
         // );
-        this.customTableInputData = {
-          ...this.customTableInputData, 
-          ELEMENT_DATA : res['promoList']
-        }
+        this.customerDetails = res['customerDetails'];
+        this.customFormData = [
+          { name: "consumer_phone", required: true, displayName: "Consumer Phone", type: TYPE_ENUM.String, defaultValue: this.customerDetails.consumer_phone || '', Validator: Validators.required },
+          { name: "consumer_email", required:true, displayName: "Consumer Email", type: TYPE_ENUM.String, defaultValue: this.customerDetails.consumer_email || '', Validator: Validators.required  },
+          { name: "consumer_addresses_name", required:true,  displayName: "Consumer Address Name", type: TYPE_ENUM.String, defaultValue: this.customerDetails.consumer_addresses[0].consumer_address_name || '', Validator: Validators.required },
+          { name: "consumer_addresses", required:false,  displayName: "Consumer Address", type: TYPE_ENUM.String, defaultValue: this.customerDetails.consumer_addresses[0].consumer_address || '' },
+          { name: "consumer_addresses_latlong", required:false,  displayName: "Consumer Address Latlong", type: TYPE_ENUM.String, defaultValue: this.customerDetails.consumer_addresses[0].consumer_address_latlong || '' },
+          { name: "consumer_kyc_name", required:true, displayName: "Consumer KYC Name", type: TYPE_ENUM.String, defaultValue: this.customerDetails.consumer_kyc[0].kycName || '', Validator: Validators.required },
+          { name: "consumer_kyc_desc", required:true, displayName: "Consumer KYC Desc", type: TYPE_ENUM.String, defaultValue: this.customerDetails.consumer_kyc[0].kycDescription || '', Validator: Validators.required },
+          { name: "consumer_kyc_attachment_url", required:false, displayName: "Consumer KYC Attachment URL", type: TYPE_ENUM.String, defaultValue: this.customerDetails.consumer_kyc[0].kycAttachmentPath[0] || '', },
+          { name: "consumer_kyc_verification", required:false, displayName: "Consumer KYC Verification", type: TYPE_ENUM.String, defaultValue: this.customerDetails.consumer_kyc[0].kycVerification || '', },
+        ]
+        this.customFormInputData = { title: "Consumer Details", customFormDTO: this.customFormData, submitButtonText: "Save" };
       },
       errMessage => {
         
@@ -84,12 +91,57 @@ export class ListConsumerComponent {
     )
   }
 
-  addItem(event:any){
-    this.router.navigateByUrl('user/service/add');
+  public createService(formData: any) {
+    
+    let obj = {
+      "user_id": "",
+      "consumer_phone": formData.consumer_phone,
+      "consumer_email": formData.consumer_email,
+      "consumer_addresses": [{
+        "consumer_id": "",
+        "consumer_address_name": formData.consumer_addresses_name,
+        "consumer_address": formData.consumer_addresses,
+        "consumer_address_status": "Active",
+        "consumer_address_latlong": formData.consumer_addresses_latlong
+      }],
+      "consumer_kyc": [{
+        "kycId":"1",
+        "kycName": formData.consumer_kyc_name,
+        "kycDescription": formData.consumer_kyc_desc,
+        "kycAttachmentPath": [formData.consumer_kyc_attachment_url],
+        "kycVerification": formData.consumer_kyc_verification
+
+      }]
+    }
+    console.log(obj);
+    this.consumerService.createConsumer(
+      obj,
+      res => {
+        Alert.showStatus(
+          AlertType.SUCCESS,
+          AlertTitle.SUCCESS,
+          'The Consumer has been successfully created!'
+        );
+      },
+      errMessage => {
+        Alert.showStatus(
+          AlertType.ERROR,
+          AlertTitle.ERROR,
+          ''
+        );
+      },
+      () => {
+        this.isLoading = false;
+      }
+    )
   }
 
-  editItem(element:any){
-    this.router.navigateByUrl('user/updateCommission?state='+btoa(JSON.stringify(element)))
+  gotoAddConsumer(event:any){
+    this.router.navigateByUrl('user/consumer/add');
+  }
+
+  gotoEditConsumer(element:any){
+    this.router.navigateByUrl('user/consumer/edit?state='+btoa(JSON.stringify(element)))
   }
 
 }
