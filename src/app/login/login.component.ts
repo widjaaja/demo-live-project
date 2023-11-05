@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
 
     public login() {
         let obj = { 
-            username: this.f['username'].value, 
+            userName: this.f['username'].value, 
             authType: 5 
         }
         this.accountService.login(
@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
 
     public verifyOTP() {
         let obj = { 
-            username: this.f['username'].value, 
+            userName: this.f['username'].value, 
             oneTimePass: this.otp['oneTimePass'].value
         }
         this.accountService.generateToken(
