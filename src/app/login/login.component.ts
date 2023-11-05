@@ -101,7 +101,7 @@ export class LoginComponent implements OnInit {
                 Alert.showStatus(
                     AlertType.ERROR,
                     AlertTitle.ERROR,
-                    ''
+                    'Wrong OTP Number'
                 );
             },
             () => {
