@@ -1,7 +1,7 @@
 <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
    
     <mat-sidenav-container fullscreen>    
-        <mat-sidenav *ngIf="user && isOpened" [opened]="isOpened" mode="side" >
+        <mat-sidenav *ngIf="user" [opened]="isOpened" mode="side" >
             <app-side-navigation (toggleSideNavEvent)="toggleSideNav($event)" [opened]="isOpened" />
         </mat-sidenav>
 
