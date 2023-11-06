@@ -21,7 +21,7 @@ export class AccountBypassComponent implements OnInit {
     localStorage.setItem('user', JSON.stringify(obj));
 
     setTimeout(() => {
-      window.location.href = '/user';
+      window.location.href = '/user/dashboard';
     }, 1000);
   }
 
