@@ -79,6 +79,7 @@ export class LoginComponent implements OnInit {
     }
 
     public verifyOTP() {
+
         let obj = { 
             userName: this.f['username'].value, 
             oneTimePass: this.otp['oneTimePass'].value
@@ -93,7 +94,9 @@ export class LoginComponent implements OnInit {
                 );
                 if(res){
                     localStorage.setItem('user', JSON.stringify(res));
-                    this.router.navigateByUrl('user')
+                    setTimeout(() => {
+                        window.location.href = '/user/dashboard';
+                    }, 1000);
                 }
                 console.log(res);
             },
