@@ -39,6 +39,13 @@ export class InterceptorService implements HttpInterceptor {
                 );
                 this.router.navigate(['login']);
               }
+              else if (err.status === 405){
+                Alert.showStatus(
+                  AlertType.ERROR,
+                  AlertTitle.ERROR,
+                  'Something When Wrong'
+                );
+              }
               else {
                 Alert.showStatus(
                   AlertType.ERROR,

@@ -82,7 +82,8 @@ export class LoginComponent implements OnInit {
 
         let obj = { 
             userName: this.f['username'].value, 
-            oneTimePass: this.otp['oneTimePass'].value
+            oneTimePass: this.otp['oneTimePass'].value,
+            authType: 5
         }
         this.accountService.generateToken(
             obj,
