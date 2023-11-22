@@ -43,7 +43,13 @@ export class EditPartnerComponent implements OnInit {
                 { name: "partner_latlong", displayName: "Partner Lat long", type: TYPE_ENUM.String, defaultValue: partner.partner_location.partner_latlong, Validator: Validators.required },
               ]
             },
-            { name: "partner_contact", displayName: "Contact", type: TYPE_ENUM.String, defaultValue: partner.partner_contact },
+            {
+              name: "partner_contact", displayName: "Partner Contact", type: TYPE_ENUM.Group, defaultValue: '', Validator: Validators.required,
+              child: [
+                { name: "partner_phones", displayName: "Partner Phones", type: TYPE_ENUM.String, defaultValue: partner.partner_contact.partner_emails[0], Validator: Validators.required },
+                { name: "partner_emails", displayName: "Partner Emails", type: TYPE_ENUM.String, defaultValue: partner.partner_contact.partner_phones[0], Validator: Validators.required },
+              ]
+            },
             { name: "partner_files", displayName: "Files", type: TYPE_ENUM.file, defaultValue: partner.partner_files },
           ]
 
